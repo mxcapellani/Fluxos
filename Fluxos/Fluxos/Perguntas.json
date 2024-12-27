@@ -1,0 +1,41 @@
+{
+  "perguntas": {
+    "inicio": {
+      "pergunta": "Voc� gosta de qual fruta?",
+      "opcoes": {
+        "banana": "banana_flow",
+        "maca": "maca_flow"
+      }
+    },
+    "banana_flow": {
+      "pergunta": "Voc� gosta de banana madura ou verde?",
+      "opcoes": {
+        "madura": "banana_madura",
+        "verde": "banana_verde"
+      }
+    },
+    "maca_flow": {
+      "pergunta": "Voc� prefere ma�� vermelha ou verde?",
+      "opcoes": {
+        "vermelha": "maca_vermelha",
+        "verde": "maca_verde"
+      }
+    },
+    "banana_madura": {
+      "pergunta": "Voc� gosta de banana madura no caf� da manh�?",
+      "opcoes": {}
+    },
+    "banana_verde": {
+      "pergunta": "Voc� usa banana verde para fazer receitas?",
+      "opcoes": {}
+    },
+    "maca_vermelha": {
+      "pergunta": "Voc� gosta de ma�� vermelha com casca?",
+      "opcoes": {}
+    },
+    "maca_verde": {
+      "pergunta": "Voc� acha ma�� verde muito �cida?",
+      "opcoes": {}
+    }
+  }
+}
