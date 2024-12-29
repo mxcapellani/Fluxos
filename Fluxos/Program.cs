@@ -1,3 +1,5 @@
+using Fluxos.Repository;
+using Fluxos.Service;
 using Npgsql;
 using System.Data;
 
@@ -19,6 +21,12 @@ builder.Services.AddScoped<PerguntasService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<PerguntasRepository>();
+builder.Services.AddScoped<PerguntasService>();
+builder.Services.AddScoped<WppService>();
+
+
 
 var app = builder.Build();
 

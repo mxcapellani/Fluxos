@@ -5,8 +5,8 @@
         public int Id { get; set; }
         public DateTime Data { get; set; }
         public string Telefone { get; set; }
-        public int IdPergunta { get; set; }
-        public int IdResposta { get; set; }
+        public int Id_Pergunta { get; set; }
+        public int Id_Resposta { get; set; }
     }
 
 }

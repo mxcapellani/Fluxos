@@ -1,5 +1,8 @@
 ﻿using Fluxos.Domain;
+using Fluxos.Domain.Wpp;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Fluxos.Controllers
 {
@@ -14,16 +17,25 @@ namespace Fluxos.Controllers
             _service = service;
         }
 
-        [HttpGet("inicio")]
+        [HttpPost("inicio")]
         public async Task<IActionResult> GetInicio()
-        {
-            var pergunta = await _service.GetPerguntaAsync("1"); 
+         {
+
+
+            var pergunta = await _service.GetPerguntaAsync("1");
             if (pergunta == null)
             {
                 return NotFound(new { message = "Pergunta inicial não encontrada." });
             }
-
             return Ok(pergunta);
+        }
+
+        [HttpPost("start")]
+        public async Task<IActionResult> Start([FromBody] ReceberMensagem message)
+        {
+
+            await _service.RespostasAsync(message);
+            return Ok();
         }
 
         [HttpPost("continuar")]
