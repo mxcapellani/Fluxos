@@ -20,11 +20,14 @@ namespace Fluxos.Service
             var url = "http://localhost:3000/client/sendMessage/capellani";
             var apiKey = constApiKey;
 
+            //melhorar para mais funções de texto
+            var msg = mensagem.content.Replace("{quebra}", "\n");
+
             var requestBody = new
             {
                 chatId = mensagem.chatId,
                 contentType = mensagem.contentType,
-                content = mensagem.content
+                content = msg
             };
 
             try

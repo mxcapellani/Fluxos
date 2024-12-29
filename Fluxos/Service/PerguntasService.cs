@@ -22,6 +22,7 @@ public class PerguntasService
 
         if (empresa != null) {
             var msgWpp = new EnviarMensagem();
+            var historico = new Historico();
 
             var primeiraMensagem = await _perguntasRepository.ConsultarHistorico(mensagem.From, empresa.id);
             
@@ -40,7 +41,7 @@ public class PerguntasService
                 var textoOpcao = perguntaIncio.PerguntaTexto;
                 foreach (var item in perguntaIncio.Opcoes)
                 {
-                    textoOpcao += item.Id + " - " + item.Texto;
+                    textoOpcao += "{quebra}" + item.Id + " - " + item.Texto;
                 }
 
                 msgWpp.content = textoOpcao;
@@ -48,11 +49,9 @@ public class PerguntasService
                 msgWpp.contentType = "string";
                 //await _wppService.SendMessageAsync(msgWpp);
 
-                var historico = new Historico { 
-                Data = DateTime.Now,
-                Id_Pergunta = perguntaIncio.Id,
-                Telefone = mensagem.From
-                };
+                historico.Data = DateTime.Now;
+                historico.Id_Pergunta = perguntaIncio.Id;
+                historico.Telefone = mensagem.From;
 
                 await _perguntasRepository.InsertHistoricoAsync(historico,empresa.id);
             }
@@ -65,7 +64,7 @@ public class PerguntasService
                 // Verificar se algum item contém o texto
                 //bool contemTexto = respostasPossiveis.Any(opcao => opcao.Texto.Contains(mensagem.Body, StringComparison.OrdinalIgnoreCase)); //procurar por texto
 
-                var contemTexto = respostasPossiveis.FirstOrDefault(opcao => opcao.Id.ToString() == mensagem.Body);
+                var contemTexto = respostasPossiveis.FirstOrDefault(opcao => opcao.Fluxo_Destino == mensagem.Body);
 
                 if (contemTexto == null){// não reconhece a resposta 
                     var generico = await _perguntasRepository.ConsultarTextoGenerico(2);
@@ -76,7 +75,23 @@ public class PerguntasService
                 }
                 else //reconheci a resposta, seguir o fluxo
                 {
-                    var x = 0;
+                    historico.Data = DateTime.Now;
+                    historico.Id_Resposta = int.Parse(mensagem.Body);
+                    historico.Telefone = mensagem.From;
+                    //await _perguntasRepository.InsertHistoricoAsync(historico, empresa.id); //inserindo um registro com a resposta
+
+                    var pergunta = await GetPerguntaAsync(mensagem.Body); //pegando a próxima pergunta
+
+                    var textoOpcao = pergunta.PerguntaTexto;
+                    foreach (var item in pergunta.Opcoes)
+                    {
+                        textoOpcao += "{quebra}" + item.Id + " - " + item.Texto;
+                    }
+
+                    msgWpp.content = textoOpcao;
+                    msgWpp.chatId = mensagem.From;
+                    msgWpp.contentType = "string";
+                    //await _wppService.SendMessageAsync(msgWpp);
                 }
 
             }
