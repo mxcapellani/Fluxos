@@ -18,8 +18,8 @@ namespace Fluxos.Controllers
         }
 
         [HttpPost("inicio")]
-        public async Task<IActionResult> GetInicio()
-         {
+        public async Task<IActionResult> GetInicio([FromBody] dynamic model)
+        {
 
 
             var pergunta = await _service.GetPerguntaAsync("1");
